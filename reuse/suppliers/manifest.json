@@ -127,6 +127,7 @@
 					"transition": "show"
 				}
 			}
-		}
+		},
+		"events": ["toProduct"]
 	}
 }

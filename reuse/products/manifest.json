@@ -108,6 +108,11 @@
 					"transition": "show"
 				}
 			}
-		}
+		},
+		"events": [
+			"toSupplier",
+			"toCategory",
+			"toProduct"
+		]
 	}
 }

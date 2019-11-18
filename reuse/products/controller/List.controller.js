@@ -27,9 +27,6 @@ sap.ui.define([
 			const oTable = this.getView().byId("table");
 			const that = this;
 
-			// check whether the list view is used in embedded mode
-			this.bEmbedded = !!oArgs.basepath;
-
 			oTable.bindItems({
 				path: sPath,
 				parameters: {
@@ -56,20 +53,13 @@ sap.ui.define([
 			const oOwnerComponent = this.getOwnerComponent();
 			const sProductID = oEvent.getSource().getBindingContext().getProperty("ProductID");
 
-			if (this.bEmbedded) {
-				// in embedded mode
-				// get the parent component of the owner component
-				// and fire the "toProduct" event to go to the detail page of the product
-				Component.getOwnerComponentFor(oOwnerComponent).fireEvent("toProduct", {
-					productID: sProductID
-				});
-			} else {
-				oOwnerComponent
-					.getRouter()
-					.navTo("detail", {
-						id: sProductID
-					})
-			}
+			// fire the "toProduct" event to go to the detail page of the product
+			// all parent components of this component, no matter whether it's the root application
+			// component or the Supplier/Category component, they can handle the "toProduct" event
+			// correctly
+			oOwnerComponent.fireEvent("toProduct", {
+				productID: sProductID
+			});
 		}
 	})
 })
