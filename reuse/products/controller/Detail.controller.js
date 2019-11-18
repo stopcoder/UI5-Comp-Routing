@@ -1,4 +1,7 @@
-sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
+sap.ui.define([
+	"yelcho/reuse/BaseController",
+	"sap/base/Log"
+], function(
 	Controller,
 	Log
 ) {
@@ -10,11 +13,9 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 			this.getOwnerComponent()
 				.getRouter()
 				.getRoute("detail")
-				.attachPatternMatched(this._onPatternMatched, this)
+				.attachPatternMatched(this._onMatched, this)
 		},
-		_onPatternMatched: function(oEvent) {
-			Controller.prototype.onInit.apply(this, arguments)
-
+		_onMatched: function(oEvent) {
 			const args = oEvent.getParameter("arguments")
 
 			this.getOwnerComponent()
@@ -71,14 +72,18 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 						.getBindingContext()
 						.getObject().SupplierID
 			)
-			this.getOwnerComponent()
-				.getRouter()
-				.navTo("suppliers", {
-					id: oEvent
-						.getSource()
-						.getBindingContext()
-						.getObject().SupplierID
-				})
+
+			const oOwnerComponent = this.getOwnerComponent();
+			const oModel = oOwnerComponent.getModel();
+			const oBindingContext = oEvent.getSource().getBindingContext();
+			const sSupplierID = oBindingContext.getProperty("SupplierID");
+
+			oOwnerComponent.fireEvent("toSupplier", {
+					supplierID: sSupplierID,
+					supplierKey: encodeURIComponent("/" + oModel.createKey("Suppliers", {
+						SupplierID: sSupplierID
+					}))
+				});
 		},
 		onPressCategory: function(oEvent) {
 			Log.info(
@@ -89,14 +94,18 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 						.getBindingContext()
 						.getObject().CategoryID
 			)
-			this.getOwnerComponent()
-				.getRouter()
-				.navTo("categories", {
-					id: oEvent
-						.getSource()
-						.getBindingContext()
-						.getObject().CategoryID
-				})
+
+			const oOwnerComponent = this.getOwnerComponent();
+			const oModel = oOwnerComponent.getModel();
+			const oBindingContext = oEvent.getSource().getBindingContext();
+			const sCategoryID = oBindingContext.getProperty("CategoryID");
+
+			oOwnerComponent.fireEvent("toCategory", {
+					categoryID: sCategoryID,
+					categoryKey: encodeURIComponent("/" + oModel.createKey("Categories", {
+						CategoryID: sCategoryID
+					}))
+				});
 		}
 	})
 })

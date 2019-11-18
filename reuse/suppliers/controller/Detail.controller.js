@@ -1,4 +1,7 @@
-sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
+sap.ui.define([
+	"yelcho/reuse/BaseController",
+	"sap/base/Log"
+], function(
 	Controller,
 	Log
 ) {
@@ -10,11 +13,10 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 			this.getOwnerComponent()
 				.getRouter()
 				.getRoute("detail")
-				.attachPatternMatched(this._onPatternMatched, this)
+				.attachMatched(this._onMatched, this)
 		},
-		_onPatternMatched: function(oEvent) {
+		_onMatched: function(oEvent) {
 			Controller.prototype.onInit.apply(this, arguments)
-
 			const args = oEvent.getParameter("arguments")
 
 			this.getOwnerComponent()
@@ -57,24 +59,6 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 					}.bind(this)
 				}
 			})
-		},
-		onPressProduct: function(oEvent) {
-			Log.info(
-				this.getView().getControllerName(),
-				"onPressProduct " +
-					oEvent
-						.getSource()
-						.getBindingContext()
-						.getObject().ProductID
-			)
-			this.getOwnerComponent()
-				.getRouter()
-				.navTo("products", {
-					id: oEvent
-						.getSource()
-						.getBindingContext()
-						.getObject().ProductID
-				})
 		}
 	})
 })

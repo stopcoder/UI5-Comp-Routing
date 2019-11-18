@@ -10,9 +10,9 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 			this.getOwnerComponent()
 				.getRouter()
 				.getRoute("detail")
-				.attachPatternMatched(this._onPatternMatched, this)
+				.attachMatched(this._onMatched, this)
 		},
-		_onPatternMatched: function(oEvent) {
+		_onMatched: function(oEvent) {
 			Log.info(this.getView().getControllerName(), "_onPatternMatched")
 			const args = oEvent.getParameter("arguments")
 
@@ -59,24 +59,6 @@ sap.ui.define(["yelcho/reuse/BaseController", "sap/base/Log"], function(
 		},
 		northwindImageFormatter: function(picture) {
 			return picture ? "data:image/bmp;base64," + picture.substr(104) : null
-		},
-		onPressProduct: function(oEvent) {
-			Log.info(
-				this.getView().getControllerName(),
-				"onPressProduct " +
-					oEvent
-						.getSource()
-						.getBindingContext()
-						.getObject().ProductID
-			)
-			this.getOwnerComponent()
-				.getRouter()
-				.navTo("products", {
-					id: oEvent
-						.getSource()
-						.getBindingContext()
-						.getObject().ProductID
-				})
 		}
 	})
 })
